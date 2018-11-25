@@ -2,77 +2,36 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>HELLO</title>
     <script
       src="http://code.jquery.com/jquery-3.3.1.js"
       integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
       crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/PomodoroMainpage.css') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Pomodoro</title>
   </head>
-<style>
-  #myProgress {
-    width: 100%;
-    background-color: #ddd;
-  }
-
-  #myBar {
-    width: 1%;
-    height: 30px;
-    background-color: #4CAF50;
-  }
-</style>
   <body>
-    <h1>Task's:</h1>
-    {% if Tasks%}
-    <select id="selectedTask" class="" name="selectedTask">
-        {%for element in Tasks%}
-          <option value=element>{{element}}</option>
-        {%endfor%}
-
-    </select>
-    {% endif %}
-    <form class="" action="/newTask" method="post">
-      <p> To add a task to queue</p>
-      Task Name: <input type="text" name="newTask" value="" required> <br>
-      <button type="Submit">Submit</button>
-    </form>
-    <div class="progress">
-      <div  id="mybar" class="progress-bar" role="progressbar" style="width: 20" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="">
+      <h1>Task's:</h1>
+      {% if Tasks%}
+      <select id="selectedTask" class="" name="selectedTask">
+          {%for element in Tasks%}
+            <option value=element>{{element}}</option>
+          {%endfor%}
+      </select>
+      {% endif %}
     </div>
-<button id='test' >Start Timer</button>
-
-<script>
-let timing = 5
-function progressBar() {
-  console.log('outside');
-  incrementProgress(0)
-  return
-}
-$('#test').click(function(){
-  let data = {name:$.trim($('#selectedTask option:selected').text())}
-  console.log(data);
-$.ajax({
-  method:'POST',
-  url:'/finishedPomodoro',
-  data:JSON.stringify(data),
-  contentType: "application/json",
-})
-console.log('done');
-})
-
-function incrementProgress(width) {
-  console.log('inside');
-  // if(width < 100) {
-  //   width = width + 100/timing
-  //   document.getElementById("mybar").style.width = width + '%'
-  //   console.log("WIDTH:",width)
-  //   setTimeout(incrementProgress(width),1000)
-  // }
-  // if (width == 100) {
-  //   $.postJSON('/finishedPomodoro',{$('select[name='selectedTask']').val()})
-  //   console.log("request made");
-  // }
-}
-</script>
+    <div class="container jumbotron">
+      <form class="form-group" action="/newTask" method="post">
+        <p> To add a task to queue</p>
+        Task Name: <input type="text" name="newTask" value="" required> <br>
+        <button type="Submit" class="btn btn-primary btn-sm">Submit</button>
+      </form>
+      <div class="progress">
+        <div  id="mybar" class="progress-bar" role="progressbar" style="width: 20" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+  <button id='test' class="btn btn-primary btn-sm">Start Timer</button>
+    </div>
+    <script  type="text/javascript" src="{{ url_for('static', filename='scripts/PomodoroMainpage.js') }}"></script>
   </body>
 </html>
