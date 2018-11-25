@@ -3,24 +3,21 @@
 let timing = 5
 let data
 
-
+/*
+@function setData() - onclick gets element name and sets data to it to
+  prepare for the post request
+@param item - html object
+*/
 function setData(item) {
    data = {name:$.trim($(item).attr('name'))}
 }
-// Array.from('#navbarElements').forEach(function(element) {
-//   element.addEventListener('click', function(){
-//     data = {name:$.trim($(this).attr('name'))}
-//     console.log('THIS:',this);
-//     console.log('DATA',data)
-//   });
-// });
 
-
-// $('#navbarElements').on('click',function(){
-  // data = {name:$.trim($(this).attr('name'))}
-  // console.log('THIS:',this);
-  // console.log('DATA',data)
-// });
+function downloadCSV(){
+  console.log('call was made');
+  $.ajax({
+    url:'/downloadPomodoro',
+  })
+}
 
 console.log('LENGTH:',$('#navbarElements').length)
 
@@ -35,23 +32,3 @@ $('#test').click(function(){
   })
   console.log('done');
 })
-
-function progressBar() {
-  console.log('outside');
-  incrementProgress(0)
-  return
-}
-
-function incrementProgress(width) {
-  console.log('inside');
-  // if(width < 100) {
-  //   width = width + 100/timing
-  //   document.getElementById("mybar").style.width = width + '%'
-  //   console.log("WIDTH:",width)
-  //   setTimeout(incrementProgress(width),1000)
-  // }
-  // if (width == 100) {
-  //   $.postJSON('/finishedPomodoro',{$('select[name='selectedTask']').val()})
-  //   console.log("request made");
-  // }
-}
