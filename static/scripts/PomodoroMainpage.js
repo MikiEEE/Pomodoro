@@ -2,7 +2,7 @@
 
 let timing = 5
 let data
-let timer = '00:03'
+let timer = '00:01'
 document.getElementById('timer').innerHTML = timer
 
 function startTimer() {
@@ -12,7 +12,6 @@ function startTimer() {
   var s = checkSecond((timeArray[1] - 1));
   if(s==59){m=m-1}
   if(m<0){
-    alert('timer completed')
     document.getElementById('timer').innerHTML = timer
     updateTask()
     return
@@ -39,7 +38,13 @@ function setData(item) {
 
 function downloadCSV(){
   console.log('call was made');
+  // $.ajax({
+  //   method:'GET',
+  //   url:'/downloadPomodoro',
+  //   contentType: "application/json",
+  // })
   $.ajax({
+    method:'GET',
     url:'/downloadPomodoro',
   })
 }

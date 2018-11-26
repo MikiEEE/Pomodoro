@@ -11,5 +11,14 @@
   }
 
 #navbarElements {
-  
+
+}
+
+.button-link {
+background-color: transparent;
+border: none;
+}
+
+.button-link:hover {
+text-decoration: Bold;
 }

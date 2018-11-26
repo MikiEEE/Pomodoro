@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, url_for, render_template,send_file
 from Task import Task
-
+import csv
 taskDict = dict()
 app = Flask(__name__)
 
@@ -24,10 +24,13 @@ def newTask():
 
 @app.route('/downloadPomodoro',methods=['POST','GET'])
 def downloadFile ():
-    print('call was mades')
-    path = "templates/hello.html"
-    return send_file(path, as_attachment=True)
-
+    path = 'PomodoroWork.csv'
+    with open('PomodoroWork.csv', 'w') as CSVfile:
+        writer = csv.writer(CSVfile,delimiter=',',)
+        writer.writerow({'Time(mins)','Task'})
+        data = [value.toCSV() for key, value in taskDict.items()]
+        writer.writerows(data)
+    return send_file('PomodoroWork.csv',mimetype='text/csv',as_attachment=True,attachment_filename='downloadFile.csv')
 
 @app.route('/finishedPomodoro',methods=['POST'])
 def processPomodoro():

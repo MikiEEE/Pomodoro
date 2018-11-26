@@ -13,3 +13,6 @@ class Task(object):
     def completedInterval(self):
         self.numOfIntervals += 1
         return
+
+    def toCSV(self):
+         return {self.name,self.numOfIntervals * 25}
