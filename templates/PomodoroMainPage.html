@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script
+      src="http://code.jquery.com/jquery-3.3.1.js"
+      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+      crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/PomodoroMainpage.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Pomodoro</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" >
+      <a class="navbar-brand" href="#">Pomodoro Method</a>
+    </nav>
+    <div class="container-fluid">
+      <div class="row flex-xl-nowrap">
+        <div class="col-12 col-md-3 col-xl-2 bd-sidebar">
+          <nav class="bd-links collapse show" id="navbarNav bd-docs-nav sidebar">
+            {% if Tasks%}
+                {%for element in Tasks%}
+                <div class="bd-toc-item">
+                    <button class="button-link bd-toc-link" name="{{element}}" onclick="setData(this)">{{element}}</button>
+                </div>
+                {%endfor%}
+            {% endif %}
+          </nav>
+        </div>
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content">
+          <div class="jumbotron container">
+            <form class="form-group" action="/newTask" method="post">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">Add Task</span>
+                </div>
+              <input type="text" class="form-control" placeholder="Task Name"  name="newTask" aria-label="Task Name" aria-describedby="basic-addon1" required>
+              </div>
+              <button type="Submit" class="btn btn-primary btn-md " >Submit</button>
+            </form>
+          </div>
+          {%if Tasks%}
+          <div class="container">
+            Time left = <span id="timer"></span>
+            <p></p>
+            <button id='test' class="btn btn-primary btn-sm " onclick="startTimer()">Start Timer</button>
+            <p></p><br>
+            <p></p><br>
+          </div>
+          <div class="container">
+            <form class="" method="get" action="/downloadPomodoro">
+                <button class="btn btn-primary btn-sm">Download CSV</button>
+            </form>
+          </div>
+        {%endif%}
+        </main>
+      </div>
+    </div>
+    <script  type="text/javascript" src="{{ url_for('static', filename='scripts/PomodoroMainpage.js') }}"></script>
+  </body>
+</html>

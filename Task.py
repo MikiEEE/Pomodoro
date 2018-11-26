@@ -15,4 +15,4 @@ class Task(object):
         return
 
     def toCSV(self):
-         return {self.name,self.numOfIntervals * 25}
+         return self.name +','+ str(self.numOfIntervals * 25) + ','

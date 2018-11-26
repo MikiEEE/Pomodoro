@@ -3,7 +3,13 @@
 let timing = 5
 let data
 let timer = '00:01'
-document.getElementById('timer').innerHTML = timer
+
+try{
+    document.getElementById('timer').innerHTML = timer
+}
+catch(err){
+  console.log(err);
+}
 
 function startTimer() {
   var presentTime = document.getElementById('timer').innerHTML;
@@ -38,11 +44,6 @@ function setData(item) {
 
 function downloadCSV(){
   console.log('call was made');
-  // $.ajax({
-  //   method:'GET',
-  //   url:'/downloadPomodoro',
-  //   contentType: "application/json",
-  // })
   $.ajax({
     method:'GET',
     url:'/downloadPomodoro',
@@ -61,7 +62,3 @@ function updateTask() {
   }
   console.log('done');
 }
-
-$('#test').click(function(){
-
-})

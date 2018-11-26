@@ -1,6 +1,5 @@
 from flask import Flask, request, redirect, url_for, render_template,send_file
 from Task import Task
-import csv
 taskDict = dict()
 app = Flask(__name__)
 
@@ -14,7 +13,8 @@ I need to add csv functionallity and bring the drop down menu back with athe tas
 
 @app.route('/pomodoro', methods=['GET', 'POST'])
 def startpage():
-        return render_template('hello.html',Tasks = taskDict.keys())
+        return render_template('PomodoroMainpage.html',Tasks = taskDict.keys())
+
 
 @app.route('/newTask', methods=['POST'] )
 def newTask():
@@ -22,15 +22,17 @@ def newTask():
         taskDict[request.form['newTask']] = Task(request.form['newTask'])
     return redirect('/pomodoro')
 
+
 @app.route('/downloadPomodoro',methods=['POST','GET'])
 def downloadFile ():
-    path = 'PomodoroWork.csv'
-    with open('PomodoroWork.csv', 'w') as CSVfile:
-        writer = csv.writer(CSVfile,delimiter=',',)
-        writer.writerow({'Time(mins)','Task'})
-        data = [value.toCSV() for key, value in taskDict.items()]
-        writer.writerows(data)
-    return send_file('PomodoroWork.csv',mimetype='text/csv',as_attachment=True,attachment_filename='downloadFile.csv')
+    path = 'outputs/PomodoroWork.csv'
+    with open(path, 'w') as CSVfile:
+        CSVfile.write('Task,Time(mins),\n')
+        for key, value in taskDict.items():
+            CSVfile.write(value.toCSV() + '\n')
+            print(value.toCSV() )
+    return send_file(path,mimetype='text/csv',as_attachment=True,attachment_filename='downloadFile.csv')
+
 
 @app.route('/finishedPomodoro',methods=['POST'])
 def processPomodoro():
