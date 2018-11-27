@@ -1,4 +1,4 @@
-Task,Time(mins),
-MicroBioLab,0,
-Anatomy,0,
-Electrical Lab,25,
+project_name,timer
+Anatomy,1
+Electrical Lab,1
+MicroBioLab,3

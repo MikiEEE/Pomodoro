@@ -1,7 +1,12 @@
 from flask import Flask, request, redirect, url_for, render_template,send_file
 from Task import Task
 from flask_dynamo import Dynamo
+from boto3.dynamodb.conditions import Key, Attr
+import boto3
+import csv
 
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('project')
 taskDict = dict()
 app = Flask(__name__)
 
@@ -19,56 +24,79 @@ app.config['DYNAMO_TABLES'] = [
         'TableName':'project',
         'KeySchema':[
         dict(AttributeName='project_name', KeyType='HASH'),
-        dict(AttributeName='timer',KeyType='RANGE')
         ],
         'AttributeDefinitions':[
         dict(AttributeName='project_name', AttributeType='S'),
-        dict(AttributeName='timer', AttributeType='N')
         ],
         'ProvisionedThroughput':dict(ReadCapacityUnits=5, WriteCapacityUnits=5)
     }
 ]
 dynamo = Dynamo(app)
 
+with app.app_context():
+    dynamo.create_all()
 
-@app.route('/pomodoro', methods=['GET', 'POST'])
-def startpage():
-        
-        return render_template('PomodoroMainpage.html',Tasks = taskDict.keys())
-
-
-@app.route('/newTask', methods=['POST'] )
-def newTask():
-    if request.form['newTask'] not in taskDict:
-        taskDict[request.form['newTask']] = Task(request.form['newTask'])
-        dynamo.tables['project'].put_item(
-        Item={
-            'project_name':request.form['newTask'],
-            'timer':0
-        })
-    return redirect('/pomodoro')
+    @app.route('/pomodoro', methods=['GET', 'POST'])
+    def startpage():
+            response = table.scan()
+            items = response['Items']
+            tasks = tuple(item['project_name'] for item in items)
+            return render_template('PomodoroMainpage.html',Tasks = tasks)
 
 
-@app.route('/downloadPomodoro',methods=['POST','GET'])
-def downloadFile ():
-    path = 'outputs/PomodoroWork.csv'
-    with open(path, 'w') as CSVfile:
-        CSVfile.write('Task,Time(mins),\n')
-        for key, value in taskDict.items():
-            CSVfile.write(value.toCSV() + '\n')
-            print(value.toCSV() )
-    return send_file(path,mimetype='text/csv',as_attachment=True,attachment_filename='downloadFile.csv')
+    @app.route('/newTask', methods=['POST'] )
+    def newTask():
+        #This checks for repeats , Im not sure if this is necescary
+        response = table.scan()
+        items = response['Items']
+        projectsFromDB = {item['project_name'] for item in items}
+        if request.form['newTask'] not in projectsFromDB:
+            dynamo.tables['project'].put_item(
+            Item={
+                'project_name':request.form['newTask'],
+                'timer':0
+            })
+        return redirect('/pomodoro')
 
 
-@app.route('/finishedPomodoro',methods=['POST'])
-def processPomodoro():
-    try:
-        key = request.json['name']
-        print(key)
-        taskDict[key].completedInterval()
-        print(taskDict[key].numOfIntervals)
-    except KeyError:
-        print('KEY ERROR: something is most likley wrong with the main dictionary')
-    else:
-        print('Successfully Processed Pomodoro for task:', key)
-    return redirect('/pomodoro')
+    @app.route('/downloadPomodoro',methods=['POST','GET'])
+    def downloadFile ():
+        path = 'outputs/PomodoroWork.csv'
+        response = table.scan()
+        items = response['Items']
+        with open(path, 'w') as csvfile:
+            fieldnames = ['project_name', 'timer']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(items)
+        return send_file(path,mimetype='text/csv',as_attachment=True,attachment_filename='downloadFile.csv')
+
+
+    @app.route('/finishedPomodoro',methods=['POST'])
+    def processPomodoro():
+        try:
+            key = 'project_name'
+            query = request.json['name']
+            response = table.get_item(
+            Key={
+                    key: query,
+                }
+            )
+            item = response['Item']
+            currentIntervals = item['timer']
+            newInterval = currentIntervals + 1
+
+            table.update_item(
+                Key={
+                    'project_name':query,
+                },
+                UpdateExpression='SET timer =  :newTime',
+                ExpressionAttributeValues={
+                ':newTime': newInterval
+                }
+            )
+        except KeyError:
+            print('KEY ERROR: something is most likley wrong with the main dictionary')
+        else:
+            print('Successfully Processed Pomodoro for task:',query)
+        return redirect('/pomodoro')
