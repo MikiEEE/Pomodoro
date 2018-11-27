@@ -4,11 +4,10 @@ taskDict = dict()
 app = Flask(__name__)
 
 '''
-So Far I have a method that can add tasks and print them to the html page
-What I need to do is hook up the timer to be able to update the tasks
-then I need to be able to print it all to a csv and download it.
-the timer is client side
-I need to add csv functionallity and bring the drop down menu back with athe tasks in a scroll bar
+I need to decorate the timer and add a break time alert.
+I need to let the person know what they have selected
+I need to have an instruction page and a delete link
+Then I need to get rid of the log comments
 '''
 
 @app.route('/pomodoro', methods=['GET', 'POST'])

@@ -12,19 +12,42 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" >
-      <a class="navbar-brand" href="#">Pomodoro Method</a>
+      <a class="navbar-brand">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh3Mb_Afj4ZdJtLv4KD4kmN7VUxV3v5hAQDs9niOyhwO9NUZ0atQ"
+          width="30" height="30" class="d-inline-block align-top" alt="">
+        Pomodoro Method
+      </a>
+      <div id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/instructions">Instructions</a>
+          </li>
+        </div>
+        </ul>
     </nav>
     <div class="container-fluid">
       <div class="row flex-xl-nowrap">
         <div class="col-12 col-md-3 col-xl-2 bd-sidebar">
           <nav class="bd-links collapse show" id="navbarNav bd-docs-nav sidebar">
-            {% if Tasks%}
-                {%for element in Tasks%}
-                <div class="bd-toc-item">
-                    <button class="button-link bd-toc-link" name="{{element}}" onclick="setData(this)">{{element}}</button>
-                </div>
-                {%endfor%}
-            {% endif %}
+            <ul class="nav flex-column">
+              {% if Tasks%}
+                <li class="nav-item">
+                  <a class="nav-link disabled">Tasks en Queue</a>
+                </li>
+                  {%for element in Tasks%}
+                  <li class="nav-item">
+                    <button class="button-link bd-toc-link nav-link disabled" name="{{element}}" onclick="setData(this)">{{element}}</button>
+                  </li>
+                  {%endfor%}
+              {% endif %}
+              {%if not Tasks%}
+                <li>
+                  <li class="nav-item">
+                    <a class="nav-link disabled">No tasks en Queue</a>
+                  </li>
+                </li>
+              {%endif%}
+            </ul>
           </nav>
         </div>
         <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content">
@@ -40,12 +63,11 @@
             </form>
           </div>
           {%if Tasks%}
-          <div class="container">
+          <div class="container jumbotron">
             Time left = <span id="timer"></span>
             <p></p>
-            <button id='test' class="btn btn-primary btn-sm " onclick="startTimer()">Start Timer</button>
-            <p></p><br>
-            <p></p><br>
+            <button id='test' class="btn btn-primary btn-md " onclick="startTimer()">Start Timer</button>
+
           </div>
           <div class="container">
             <form class="" method="get" action="/downloadPomodoro">
