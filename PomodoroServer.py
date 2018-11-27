@@ -1,5 +1,7 @@
 from flask import Flask, request, redirect, url_for, render_template,send_file
 from Task import Task
+from flask_dynamo import Dynamo
+
 taskDict = dict()
 app = Flask(__name__)
 
@@ -10,8 +12,28 @@ I need to have an instruction page and a delete link
 Then I need to get rid of the log comments
 '''
 
+
+app = Flask(__name__)
+app.config['DYNAMO_TABLES'] = [
+    {
+        'TableName':'project',
+        'KeySchema':[
+        dict(AttributeName='project_name', KeyType='HASH'),
+        dict(AttributeName='timer',KeyType='RANGE')
+        ],
+        'AttributeDefinitions':[
+        dict(AttributeName='project_name', AttributeType='S'),
+        dict(AttributeName='timer', AttributeType='N')
+        ],
+        'ProvisionedThroughput':dict(ReadCapacityUnits=5, WriteCapacityUnits=5)
+    }
+]
+dynamo = Dynamo(app)
+
+
 @app.route('/pomodoro', methods=['GET', 'POST'])
 def startpage():
+        
         return render_template('PomodoroMainpage.html',Tasks = taskDict.keys())
 
 
@@ -19,6 +41,11 @@ def startpage():
 def newTask():
     if request.form['newTask'] not in taskDict:
         taskDict[request.form['newTask']] = Task(request.form['newTask'])
+        dynamo.tables['project'].put_item(
+        Item={
+            'project_name':request.form['newTask'],
+            'timer':0
+        })
     return redirect('/pomodoro')
 
 
