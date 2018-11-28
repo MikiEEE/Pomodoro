@@ -26,7 +26,7 @@ function startTimer() {
       }
       if(m<0) {
         document.getElementById('timer').innerHTML = timer
-        playAlarm(document.getElementById('song'))
+        playAlarm()
         alert('INTERVAL COMPLETED')
         //stopAlarm(document.getElementById('song'))
         // {
@@ -90,8 +90,8 @@ function updateTask() {
   console.log('done');
 }
 
-function playAlarm(audio) {
-  audio.play()
+function playAlarm() {
+  document.getElementById('song').play()
   return
 }
 
