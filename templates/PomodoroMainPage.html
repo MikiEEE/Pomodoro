@@ -59,9 +59,13 @@
           </nav>
         </div>
         <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content">
-          {%if Tasks%}
           <div class="container jumbotron">
-            Time left = <span id="timer"></span>
+            <h3 id="SELECTEDPROJECT">Project Selected: </h3>
+            <p></p>
+          </div>
+          <div class="container jumbotron">
+            <p>Time left:</p>
+            <h3 id="timer"><h3>
             <p></p>
             <button id='test' class="btn btn-primary btn-md " onclick="startTimer()">Start Timer</button>
           </div>
@@ -70,10 +74,10 @@
                 <button class="btn btn-primary btn-sm">Download CSV</button>
             </form>
           </div>
-        {%endif%}
         </main>
       </div>
     </div>
+    <audio id="song" src="/OppositeTheSun" preload="auto" autoplay="false"></audio>
     <script  type="text/javascript" src="{{ url_for('static', filename='scripts/PomodoroMainpage.js') }}"></script>
   </body>
 </html>

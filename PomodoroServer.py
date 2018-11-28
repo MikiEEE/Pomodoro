@@ -1,5 +1,4 @@
 from flask import Flask, request, redirect, url_for, render_template,send_file
-from Task import Task
 from flask_dynamo import Dynamo
 from boto3.dynamodb.conditions import Key, Attr
 import boto3
@@ -139,3 +138,7 @@ with app.app_context():
         else:
             print('Successfully Processed Pomodoro for task:',query)
         return redirect('/pomodoro')
+
+    @app.route('/OppositeTheSun',methods=['GET'])
+    def getAudio():
+        return send_file('static/scripts/OppositeTheSun.mp3',as_attachment=False,attachment_filename='Song.mp3' )

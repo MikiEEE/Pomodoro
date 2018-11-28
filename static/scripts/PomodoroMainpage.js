@@ -1,9 +1,7 @@
 
 
-let timing = 5
 let data
-let timer = '00:01'
-
+const timer = '00:01'
 
 
 function initializeTimer(){
@@ -18,14 +16,29 @@ function initializeTimer(){
 
 
 function startTimer() {
-  var presentTime = document.getElementById('timer').innerHTML;
-  var timeArray = presentTime.split(/[:]+/);
-  var m = timeArray[0];
-  var s = checkSecond((timeArray[1] - 1));
-  if(s==59){m=m-1}
-  if(m<0){
-    document.getElementById('timer').innerHTML = timer
-    updateTask()
+    if(data) {
+      var presentTime = document.getElementById('timer').innerHTML;
+      var timeArray = presentTime.split(/[:]+/);
+      var m = timeArray[0];
+      var s = checkSecond((timeArray[1] - 1));
+      if(s==59) {
+        m=m-1
+      }
+      if(m<0) {
+        document.getElementById('timer').innerHTML = timer
+        playAlarm(document.getElementById('song'))
+        alert('INTERVAL COMPLETED')
+        //stopAlarm(document.getElementById('song'))
+        // {
+        //   //playAlarm()
+        //   document.getElementById('song').play()
+        // })
+        updateTask()
+        return
+    }
+  }
+  else {
+    alert('Please Select A Project')
     return
   }
 
@@ -46,6 +59,14 @@ function checkSecond(sec) {
 */
 function setData(item) {
    data = {name:$.trim($(item).attr('name'))}
+   setElement('#SELECTEDPROJECT', $.trim($(item).attr('name')))
+}
+
+function setElement(elemID, text) {
+  let newText = $(elemID).text().slice(0,18)
+  newText += text
+  $(elemID).text(newText)
+  return
 }
 
 function downloadCSV(){
@@ -69,5 +90,16 @@ function updateTask() {
   console.log('done');
 }
 
+function playAlarm(audio) {
+  audio.play()
+  return
+}
+
+function stopAlarm(audio) {
+    audio.pause()
+    audio.currentTime = 0
+    return
+}
 
 initializeTimer()
+setElement('#SELECTEDPROJECT', 'NONE')
