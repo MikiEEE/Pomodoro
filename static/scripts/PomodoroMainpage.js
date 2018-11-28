@@ -4,12 +4,18 @@ let timing = 5
 let data
 let timer = '00:01'
 
-try{
-    document.getElementById('timer').innerHTML = timer
+
+
+function initializeTimer(){
+  try{
+      document.getElementById('timer').innerHTML = timer
+  }
+  catch(err){
+    console.log(err);
+  }
+  return
 }
-catch(err){
-  console.log(err);
-}
+
 
 function startTimer() {
   var presentTime = document.getElementById('timer').innerHTML;
@@ -62,3 +68,6 @@ function updateTask() {
   }
   console.log('done');
 }
+
+
+initializeTimer()

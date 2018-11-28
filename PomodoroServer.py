@@ -7,7 +7,6 @@ import csv
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('project')
-taskDict = dict()
 app = Flask(__name__)
 
 '''
@@ -31,39 +30,77 @@ app.config['DYNAMO_TABLES'] = [
         'ProvisionedThroughput':dict(ReadCapacityUnits=5, WriteCapacityUnits=5)
     }
 ]
+
 dynamo = Dynamo(app)
 
 with app.app_context():
     dynamo.create_all()
 
-    @app.route('/pomodoro', methods=['GET', 'POST'])
+    @app.route('/Pomodoro', methods=['GET', 'POST'])
     def startpage():
             response = table.scan()
             items = response['Items']
-            tasks = tuple(item['project_name'] for item in items)
-            return render_template('PomodoroMainpage.html',Tasks = tasks)
+            Projects = tuple(item['project_name'] for item in items)
 
+            if len(Projects) == 0:
+                return redirect('/Instructions')
 
-    @app.route('/newTask', methods=['POST'] )
-    def newTask():
+            return render_template('PomodoroMainpage.html',Tasks = Projects)
+
+    @app.route('/AddProject', methods=['GET'])
+    def AddProject():
+            response = table.scan()
+            items = response['Items']
+            Projects = tuple(item['project_name'] for item in items)
+
+            return render_template('AddProject.html',Tasks = Projects)
+
+    @app.route('/newProject', methods=['POST'] )
+    def newProject():
         #This checks for repeats , Im not sure if this is necescary
         response = table.scan()
         items = response['Items']
         projectsFromDB = {item['project_name'] for item in items}
-        if request.form['newTask'] not in projectsFromDB:
+
+        if request.form['newProject'] not in projectsFromDB:
             dynamo.tables['project'].put_item(
             Item={
-                'project_name':request.form['newTask'],
+                'project_name':request.form['newProject'],
                 'timer':0
             })
-        return redirect('/pomodoro')
+        return redirect('/AddProject')
 
+    @app.route('/DeleteProject', methods=['GET', 'POST'])
+    def DeleteProject():
+        if request.method == 'GET':
+            response = table.scan()
+            items = response['Items']
+            Projects = tuple(item['project_name'] for item in items)
+            return  render_template('DeleteProject.html',Tasks = Projects)
+
+        elif request.method == 'POST':
+            key = request.form['delProject']
+            table.delete_item(
+                Key = {
+                    'project_name':key
+                }
+            )
+        return redirect('/DeleteProject')
+
+    @app.route('/Instructions', methods=['GET'])
+    def NeedGuidanceNow():
+        response = table.scan()
+        items = response['Items']
+        Projects = tuple(item['project_name'] for item in items)
+        return  render_template('Instructions.html',Tasks = Projects)
 
     @app.route('/downloadPomodoro',methods=['POST','GET'])
     def downloadFile ():
+
         path = 'outputs/PomodoroWork.csv'
         response = table.scan()
         items = response['Items']
+
         with open(path, 'w') as csvfile:
             fieldnames = ['project_name', 'timer']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -77,11 +114,13 @@ with app.app_context():
         try:
             key = 'project_name'
             query = request.json['name']
+
             response = table.get_item(
-            Key={
-                    key: query,
-                }
+                Key={
+                        key: query,
+                    }
             )
+
             item = response['Item']
             currentIntervals = item['timer']
             newInterval = currentIntervals + 1
