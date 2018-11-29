@@ -36,22 +36,22 @@ class FlaskTestCase(unittest.TestCase):
     #test adding new project to Project queue
     def test_newProject(self):
         tester = app.test_client(self)
-        response = tester.post('/newProject',data=dict(newProject='saliva'), follow_redirects=True)
-        self.assertIn(b'saliva',response.data)
+        response = tester.post('/newProject',data=dict(newProject='ClownCollege_Test'), follow_redirects=True)
+        self.assertIn(b'ClownCollege_Test',response.data)
 
     #test updating of Project List
     def test_AddProjectListUpdate(self):
         tester = app.test_client(self)
-        response = tester.post('/newProject',data=dict(newProject='saliva'), follow_redirects=True)
+        response = tester.post('/newProject',data=dict(newProject='ClownCollege_Test'), follow_redirects=True)
         self.assertIn(b'Projects en Queue', response.data)
 
     #test addition and deletion of item
     def test_AddDelete(self):
         tester = app.test_client(self)
-        response = tester.post('/newProject',data=dict(newProject='saliva'), follow_redirects=True)
-        self.assertIn(b'saliva',response.data)
-        response = tester.post('/DeleteProject',data=dict(delProject='saliva'), follow_redirects=True)
-        self.assertFalse(b'saliva' in response.data)
+        response = tester.post('/newProject',data=dict(newProject='ClownCollege_Test'), follow_redirects=True)
+        self.assertIn(b'ClownCollege_Test',response.data)
+        response = tester.post('/DeleteProject',data=dict(delProject='ClownCollege_Test'), follow_redirects=True)
+        self.assertFalse(b'ClownCollege_Test' in response.data)
 
     #Test downloadCSV
     def test_DownloadCSV(self):
