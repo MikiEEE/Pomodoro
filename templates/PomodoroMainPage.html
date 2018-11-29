@@ -44,7 +44,7 @@
                 </li>
                   {%for element in Tasks%}
                   <li class="nav-item">
-                    <button class="button-link bd-toc-link nav-link disabled" name="{{element}}" onclick="setData(this)">{{element}}</button>
+                    <button class="button-link bd-toc-link nav-link disabled" id="ElementExists" name="{{element}}" onclick="setData(this)">{{element}}</button>
                   </li>
                   {%endfor%}
               {% endif %}

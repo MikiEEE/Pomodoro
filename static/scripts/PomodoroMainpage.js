@@ -61,7 +61,6 @@ function setElement(elemID, text) {
 }
 
 function downloadCSV(){
-  console.log('call was made');
   $.ajax({
     method:'GET',
     url:'/downloadPomodoro',
@@ -70,7 +69,6 @@ function downloadCSV(){
 
 function updateTask() {
   if(data){
-    console.log('DATA',data);
     $.ajax({
       method:'POST',
       url:'/finishedPomodoro',
@@ -78,7 +76,6 @@ function updateTask() {
       contentType: "application/json",
     })
   }
-  console.log('done');
 }
 
 

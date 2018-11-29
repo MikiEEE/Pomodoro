@@ -140,4 +140,4 @@ with app.app_context():
             print('KEY ERROR: something is most likley wrong with the main dictionary')
         else:
             print('Successfully Processed Pomodoro for task:',query)
-        return redirect('/pomodoro')
+        return redirect('/Pomodoro')
