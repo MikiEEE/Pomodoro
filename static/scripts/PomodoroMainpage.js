@@ -78,6 +78,12 @@ function updateTask() {
   }
 }
 
+function setSelectedDefualt() {
+  if(!data && $('#ElementExists').length){
+    setData('#ElementExists')
+    setElement('#SELECTEDPROJECT',$('#ElementExists').eq(0).attr('name'))
+  }
+}
 
+setSelectedDefualt()
 initializeTimer()
-setElement('#SELECTEDPROJECT', 'NONE')

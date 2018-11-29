@@ -1,6 +1,7 @@
 from PomodoroServer import app
 import unittest
 import json
+
 class FlaskTestCase(unittest.TestCase):
     #test to see if app is set up correctly
     def test_PomodoroServer(self):
@@ -58,15 +59,11 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/downloadPomodoro', content_type='csv/text')
         self.assertEqual(response.status_code, 200)
 
-    #Test Timer
-    def test_finishedPomodoro(self):
-        tester = app.test_client(self)
-        response = tester.post('/finishedPomodoro',headers={contentType: "application/json"}, follow_redirects=True)
-        self.assertEqual(302,response.status_code)
-        assert response.request.path == url_for('/Pomodoro')
-
-
     #Test Instructions for content
+    def test_Instructions(self):
+        tester = app.test_client(self)
+        response = tester.get('/Instructions', content_type='csv/text')
+        self.assertIn(b'RUNNING THE POMODORO', response.data)
 
 if __name__ == '__main__':
     unittest.main()
