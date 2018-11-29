@@ -27,8 +27,6 @@ The user can then download a CSV with fieldName[Task, Time(minutes)]</p>
 
 <H3>Things to do:</H3>
 <ul>
-<li>Make it more obvious what the user selected as the task they are working on</li>
-<li>Add an instructions page to the app </li>
 <li>Add use/installation instructions to readme</li>
 <li>Comment all functions</li>
 </ul>
