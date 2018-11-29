@@ -8,6 +8,24 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/Pomodoro', content_type='html/text')
         self.assertEqual(response.status_code,200)
 
+    #Testing to see if add project get '/AddProject'
+    def test_AddProject(self):
+        tester = app.test_client(self)
+        response = tester.get('/AddProject',content_type='html/text')
+        self.assertEqual(response.status_code,200)
+
+    #Test to see if '/Delete' Loads right page
+    def test_DeleteProject(self):
+        tester = app.test_client(self)
+        response = tester.get('/DeleteProject',content_type='html/text')
+        self.assertEqual(response.status_code,200)
+
+    #Test to see if Instructions Loads
+    def test_Instructions(self):
+        tester = app.test_client(self)
+        response = tester.get('/Instructions',content_type='html/text')
+        self.assertEqual(response.status_code,200)
+
     #test to see if Mainpage is set up correctly
     def test_MainPage(self):
         tester = app.test_client(self)
@@ -26,18 +44,19 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.post('/newProject',data=dict(newProject='saliva'), follow_redirects=True)
         self.assertIn(b'Projects en Queue', response.data)
 
-    #Testing to see if add project get '/AddProject'
-    def test_AddProject(self):
+    #test addition and deletion of item
+    def test_AddDelete(self):
         tester = app.test_client(self)
-        response = tester.get('/AddProject',content_type='html/text')
-        self.assertEqual(response.status_code,200)
+        response = tester.post('/newProject',data=dict(newProject='saliva'), follow_redirects=True)
+        self.assertIn(b'saliva',response.data)
+        response = tester.post('/DeleteProject',data=dict(delProject='saliva'), follow_redirects=True)
+        self.assertTrue(b'saliva' not in response.data)
 
-    #Test to see if '/Delete' Loads right page
-    def test_DeleteProject(self):
-        tester = app.test_client(self)
-        response = tester.get('/DeleteProject',content_type='html/text')
-        self.assertEqual(response.status_code,200)
+    #Test downloadCSV
 
+    #Test Timer
+
+    #Test Instructions for content
 
 if __name__ == '__main__':
     unittest.main()
