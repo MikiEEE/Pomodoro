@@ -1,5 +1,4 @@
 from flask import Flask, request, redirect, url_for, render_template,send_file
-from Task import Task
 from flask_dynamo import Dynamo
 from boto3.dynamodb.conditions import Key, Attr
 import boto3
@@ -45,7 +44,10 @@ with app.app_context():
             if len(Projects) == 0:
                 return redirect('/Instructions')
 
-            return render_template('PomodoroMainpage.html',Tasks = Projects)
+            try:
+                return render_template('PomodoroMainpage.html',Tasks = Projects)
+            except:
+                return 'Hello'
 
     @app.route('/AddProject', methods=['GET'])
     def AddProject():
