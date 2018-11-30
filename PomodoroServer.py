@@ -46,7 +46,7 @@ with app.app_context():
             if len(Projects) == 0:
                 return redirect('/instructions')
 
-            return render_template('PomodoroMainPage.html',Tasks = Projects)
+            return render_template('pomodoroMainPage.html',Tasks = Projects)
 
     @app.route('/addProject', methods=['GET'])
     def AddProject():
@@ -54,7 +54,7 @@ with app.app_context():
             items = response['Items']
             Projects = tuple(item['project_name'] for item in items)
 
-            return render_template('AddProject.html',Tasks = Projects)
+            return render_template('addProject.html',Tasks = Projects)
 
     @app.route('/newProject', methods=['POST'] )
     def newProject():
