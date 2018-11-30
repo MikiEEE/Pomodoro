@@ -44,10 +44,7 @@ with app.app_context():
             if len(Projects) == 0:
                 return redirect('/Instructions')
 
-            try:
-                return render_template('PomodoroMainpage.html',Tasks = Projects)
-            except:
-                return 'Hello'
+            return render_template('PomodoroMainpage.html',Tasks = Projects)
 
     @app.route('/AddProject', methods=['GET'])
     def AddProject():
