@@ -20,16 +20,16 @@
       <div id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="/Pomodoro">Home</a>
+            <a class="nav-link" href="/pomodoro">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/AddProject">Add Project</a>
+            <a class="nav-link" href="/addProject">Add Project</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="/DeleteProject">Delete Project</a>
+              <a class="nav-link" href="/deleteProject">Delete Project</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="/Instructions">Instructions</a>
+              <a class="nav-link" href="/instructions">Instructions</a>
         </ul>
       </div>
     </nav>
@@ -40,7 +40,7 @@
             <ul class="nav flex-column">
               {% if Tasks%}
                 <li class="nav-item">
-                  <a class="nav-link disabled">Tasks en Queue</a>
+                  <a class="nav-link disabled">Projects en Queue</a>
                 </li>
                   {%for element in Tasks%}
                   <li class="nav-item">

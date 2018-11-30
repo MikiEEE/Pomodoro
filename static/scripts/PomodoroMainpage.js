@@ -1,5 +1,5 @@
 let data
-const timer = '00:01'
+const timer = '25:00'
 
 
 function initializeTimer(){
@@ -25,6 +25,7 @@ function startTimer() {
       if(m<0) {
         document.getElementById('timer').innerHTML = timer
         updateTask()
+        alert('Your Interval is Complete')
         return
     }
   }

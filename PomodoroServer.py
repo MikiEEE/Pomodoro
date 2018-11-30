@@ -8,6 +8,8 @@ dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('project')
 app = Flask(__name__)
 
+
+
 '''
 I need to decorate the timer and add a break time alert.
 I need to let the person know what they have selected
@@ -35,18 +37,18 @@ dynamo = Dynamo(app)
 with app.app_context():
     dynamo.create_all()
 
-    @app.route('/Pomodoro', methods=['GET', 'POST'])
+    @app.route('/pomodoro', methods=['GET', 'POST'])
     def startpage():
             response = table.scan()
             items = response['Items']
             Projects = tuple(item['project_name'] for item in items)
 
             if len(Projects) == 0:
-                return redirect('/Instructions')
+                return redirect('/instructions')
 
-            return render_template('PomodoroMainpage.html',Tasks = Projects)
+            return render_template('PomodoroMainPage.html',Tasks = Projects)
 
-    @app.route('/AddProject', methods=['GET'])
+    @app.route('/addProject', methods=['GET'])
     def AddProject():
             response = table.scan()
             items = response['Items']
@@ -67,15 +69,15 @@ with app.app_context():
                 'project_name':request.form['newProject'],
                 'timer':0
             })
-        return redirect('/AddProject')
+        return redirect('/addProject')
 
-    @app.route('/DeleteProject', methods=['GET', 'POST'])
-    def DeleteProject():
+    @app.route('/deleteProject', methods=['GET', 'POST'])
+    def deleteProject():
         if request.method == 'GET':
             response = table.scan()
             items = response['Items']
             Projects = tuple(item['project_name'] for item in items)
-            return  render_template('DeleteProject.html',Tasks = Projects)
+            return  render_template('deleteProject.html',Tasks = Projects)
 
         elif request.method == 'POST':
             key = request.form['delProject']
@@ -84,14 +86,14 @@ with app.app_context():
                     'project_name':key
                 }
             )
-        return redirect('/DeleteProject')
+        return redirect('/deleteProject')
 
-    @app.route('/Instructions', methods=['GET'])
+    @app.route('/instructions', methods=['GET'])
     def NeedGuidanceNow():
         response = table.scan()
         items = response['Items']
         Projects = tuple(item['project_name'] for item in items)
-        return  render_template('Instructions.html',Tasks = Projects)
+        return  render_template('instructions.html',Tasks = Projects)
 
     @app.route('/downloadPomodoro',methods=['POST','GET'])
     def downloadFile ():
@@ -137,4 +139,4 @@ with app.app_context():
             print('KEY ERROR: something is most likley wrong with the main dictionary')
         else:
             print('Successfully Processed Pomodoro for task:',query)
-        return redirect('/Pomodoro')
+        return redirect('/pomodoro')
