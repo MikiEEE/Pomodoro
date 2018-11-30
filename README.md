@@ -15,7 +15,7 @@ https://en.wikipedia.org/wiki/Pomodoro_Technique
 <li>Application should be publicly available</li>
 <li>Application should be production-ready, whatever that means to you</li>
 <li>Please submit your code as a PR so we can easily comment on it</li>
-<li>During the code review, you are free to make code changes in response to feedback if you feel it is waranted</li>
+<li>During the code review, you are free to make code changes in response to feedback if you feel it is warranted</li>
 </ul>
 
 <H3>My Solution So Far:</H3>
@@ -37,4 +37,6 @@ The user can then download a CSV with fieldName[Task, Time(minutes)]</p>
 <li>Activate Virtual Environment . venv/bin/activate</li>
 <li>pip install flask flask_dynamo</li>
 <li>AWS credentials needed for dynamo_db message me for these</li>
+<li>export FLASK_APP=PomodoroServer.py</li>
+<li>flask run</li>
 </ul>

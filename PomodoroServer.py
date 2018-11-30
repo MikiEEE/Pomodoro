@@ -67,7 +67,7 @@ with app.app_context():
             dynamo.tables['project'].put_item(
             Item={
                 'project_name':request.form['newProject'],
-                'timer':0
+                'completedIntervals':0
             })
         return redirect('/addProject')
 
@@ -103,7 +103,7 @@ with app.app_context():
         items = response['Items']
 
         with open(path, 'w') as csvfile:
-            fieldnames = ['project_name', 'timer']
+            fieldnames = ['project_name', 'completedIntervals']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(items)
@@ -123,7 +123,7 @@ with app.app_context():
             )
 
             item = response['Item']
-            currentIntervals = item['timer']
+            currentIntervals = item['completedIntervals']
             newInterval = currentIntervals + 1
 
             table.update_item(
