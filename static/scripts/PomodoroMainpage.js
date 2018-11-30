@@ -25,7 +25,7 @@ function startTimer() {
       if(m<0) {
         document.getElementById('timer').innerHTML = timer
         updateTask()
-        alert('Your Interval is Complete')
+        alert(`Your Interval is Complete: ${data.name}`)
         return
     }
   }
@@ -79,12 +79,12 @@ function updateTask() {
   }
 }
 
-function setSelectedDefualt() {
+function setSelectedDefault() {
   if(!data && $('#ElementExists').length){
     setData('#ElementExists')
     setElement('#SELECTEDPROJECT',$('#ElementExists').eq(0).attr('name'))
   }
 }
 
-setSelectedDefualt()
+setSelectedDefault()
 initializeTimer()
